@@ -96,7 +96,7 @@ resource "aws_opensearch_domain_policy" "main" {
         Resource = "${aws_opensearch_domain.example.arn}/*"
         Condition = {
           IpAddress = {
-            "aws:SourceIp" = ["{var.my_ip}/32", "0.0.0.0/0"]
+            "aws:SourceIp" = ["${var.my_ip}/32", "0.0.0.0/0"]
           }
         }
       }

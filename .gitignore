@@ -2,3 +2,4 @@
 terraform.tfvars
 *.tfstate*
 .terraform.lock.hcl
+./eks-cluster-with-custom-vpc\opensearch_with_domain_policy.tf
