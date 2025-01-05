@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fluent-bit-event-collector
+  namespace: logging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fluent-bit-event-collector
+  template:
+    metadata:
+      labels:
+        app: fluent-bit-event-collector
+    spec:
+      serviceAccountName: fluent-bit-event-sa
+      containers:
+      - name: fluent-bit
+        image: fluent/fluent-bit:latest
+        volumeMounts:
+        - name: fluent-bit-event-config
+          mountPath: /fluent-bit/etc/
+      volumes:
+      - name: fluent-bit-event-config
+        configMap:
+          name: fluent-bit-event-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluent-bit-event-config
+  namespace: logging
+data:
+  fluent-bit.conf: |
+    [SERVICE]
+        Flush        1
+        Log_Level    info
+
+    [INPUT]
+        Name              kubernetes_events
+        Tag               k8s_events
+        Interval_Sec      5
+        Kube_URL          https://kubernetes.default.svc
+        Kube_CA_File      /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        Kube_Token_File   /var/run/secrets/kubernetes.io/serviceaccount/token
+
+    [OUTPUT]
+        Name            es
+        Match           k8s_events
+        Host            elasticsearch-master.logging
+        Port            9200
+        Index           k8s_events
+        Type            _doc
+        HTTP_User       fluentbit
+        HTTP_Passwd     Test1234
+        TLS             On
+        TLS.Verify      Off
+        Logstash_Format Off
+        Retry_Limit     False
+        Suppress_Type_Name On
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fluent-bit-event-sa
+  namespace: logging
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: fluent-bit-event-role
+rules:
+  - apiGroups: [""]
+    resources:
+      - namespaces
+      - pods
+      - events
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: fluent-bit-event-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: fluent-bit-event-role
+subjects:
+  - kind: ServiceAccount
+    name: fluent-bit-event-sa
+    namespace: logging

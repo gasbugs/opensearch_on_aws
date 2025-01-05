@@ -42,14 +42,14 @@ module "my_vpc" {
   enable_dns_hostnames = true # DNS 호스트 이름을 활성화
 
   # 공용 서브넷의 태그. ELB 역할을 부여
-  #  public_subnet_tags = {
-  #   "kubernetes.io/role/elb" = 1
-  # }
+  public_subnet_tags = {
+    "Name" = "my-public-subnet"
+  }
 
-  # # 사설 서브넷의 태그. 내부 ELB 역할을 부여
-  # private_subnet_tags = {
-  #   "kubernetes.io/role/internal-elb" = 1
-  # }
+  # 사설 서브넷의 태그. 내부 ELB 역할을 부여
+  private_subnet_tags = {
+    "Name" = "my-private-subnet"
+  }
 }
 
 resource "aws_instance" "opensearch_instance" {
@@ -91,7 +91,7 @@ resource "aws_security_group" "my_ec2_sg" {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = ["220.79.123.8/32"] # 내 IP 확인
+    cidr_blocks = ["118.235.0.0/16", "114.202.151.250/32"] # 내 IP 확인
   }
 }
 

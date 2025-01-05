@@ -97,8 +97,8 @@ data:
         Port            9200
         Index           fluent-bit
         Type            _doc
-        HTTP_User       elastic
-        HTTP_Passwd     pH5eBXUKhcVaBtnW
+        HTTP_User       fluentbit
+        HTTP_Passwd     Test1234
         TLS             On
         TLS.Verify      Off
         Logstash_Format Off
@@ -112,8 +112,8 @@ data:
         Port            9200
         Index           nginx
         Type            _doc
-        HTTP_User       elastic
-        HTTP_Passwd     pH5eBXUKhcVaBtnW
+        HTTP_User       fluentbit
+        HTTP_Passwd     Test1234
         TLS             On
         TLS.Verify      Off
         Logstash_Format Off

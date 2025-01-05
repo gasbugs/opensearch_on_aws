@@ -92,7 +92,7 @@ data:
     [OUTPUT]
         Name            opensearch
         Match           kube.*
-        Host            search-example-domain-6wgznvwngimspusqhtdykzgpu4.ap-northeast-2.es.amazonaws.com
+        Host            search-example-domain-6wgznvwngimspusqhtdykzgpu4.ap-northeast-2.es.amazonaws.com            
         Port            443
         Index           fluent-bit
         TLS             On

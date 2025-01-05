@@ -13,7 +13,7 @@ data "aws_availability_zones" "available" {
 
 # 로컬 변수 선언. 클러스터 이름에 무작위 문자열을 추가하여 고유성을 보장
 locals {
-  cluster_name = "education-eks-${random_string.suffix.result}"
+  cluster_name = "nickname-eks-${random_string.suffix.result}"
 }
 
 # 8자리 길이의 무작위 문자열을 생성하는 리소스. 특수 문자는 포함하지 않음
@@ -27,7 +27,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws" # VPC 모듈의 소스 경로
   version = "5.14.0"                        # VPC 모듈의 버전
 
-  name = "education-vpc" # VPC의 이름
+  name = "nickname-vpc" # VPC의 이름
 
   # VPC의 CIDR 블록을 10.0.0.0/16으로 설정
   cidr = "10.0.0.0/16"
