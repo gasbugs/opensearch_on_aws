@@ -4,10 +4,7 @@ variable "aws_region" {
   default     = "ap-northeast-2"
 }
 
-<<<<<<< HEAD
 # # Ctrl + /를 누르면 자동 주석 처리됨됨
-=======
->>>>>>> 909097a62587de9af5f44dfa69bee9f086ce30f7
 # variable "opensearch_master_user" {
 #   description = "오픈서치의 master 유저 이름"
 # }
