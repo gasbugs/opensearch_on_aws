@@ -3,7 +3,7 @@ data "aws_ami" "al2023" {
   owners      = ["amazon"]
   filter {
     name   = "name"
-    values = ["al2023-ami-*"]
+    values = ["al2023-ami-*"] # amazon Linux 2023
   }
 
   filter {
@@ -24,7 +24,7 @@ module "my_vpc" {
   source  = "terraform-aws-modules/vpc/aws" # VPC 모듈의 소스 경로
   version = "5.14.0"                        # VPC 모듈의 버전
 
-  name = "my-vpc" # VPC의 이름
+  name = "nickname-vpc" # VPC의 이름
 
   # VPC의 CIDR 블록을 10.0.0.0/16으로 설정
   cidr = "10.0.0.0/16"
@@ -43,17 +43,17 @@ module "my_vpc" {
 
   # 공용 서브넷의 태그. ELB 역할을 부여
   public_subnet_tags = {
-    "Name" = "my-public-subnet"
+    "Name" = "nickname-public-subnet"
   }
 
   # 사설 서브넷의 태그. 내부 ELB 역할을 부여
   private_subnet_tags = {
-    "Name" = "my-private-subnet"
+    "Name" = "nickname-private-subnet"
   }
 }
 
 resource "aws_instance" "opensearch_instance" {
-  ami           = data.aws_ami.al2023.id # Amazon Linux 2 AMI ID (us-east-1 리전 기준)
+  ami           = data.aws_ami.al2023.id # Amazon Linux 2023 AMI ID (us-east-1 리전 기준)
   instance_type = "m5.xlarge"            # 4 vCPU, 16GB RAM
 
   vpc_security_group_ids      = [aws_security_group.my_ec2_sg.id]
@@ -74,7 +74,7 @@ resource "aws_instance" "opensearch_instance" {
   }
 
   tags = {
-    Name = "OpenSearch-Instance"
+    Name = "nickname-OpenSearch-Instance"
   }
 }
 
